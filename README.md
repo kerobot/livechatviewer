@@ -1,9 +1,10 @@
 # 🎥 Live Chat Viewer
 
-YouTubeライブ配信のチャットをリアルタイムで表示するReactアプリケーションです！
+YouTubeライブ配信のチャットをリアルタイムで表示するReact＋Viteアプリケーションです
 
 ![Live Chat Viewer](https://img.shields.io/badge/React-19.1.1-blue?style=for-the-badge&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-blue?style=for-the-badge&logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-7.1.1-yellow?style=for-the-badge&logo=vite)
 ![Status](https://img.shields.io/badge/Status-Active-green?style=for-the-badge)
 
 ## ✨ 特徴
@@ -49,11 +50,11 @@ cd livechatapi
 # 依存関係のインストール
 npm install
 
-# 開発サーバーの起動
-npm start
-```
+# Vite開発サーバーの起動
+npm run dev
 
-アプリケーションが [http://localhost:3000](http://localhost:3000) で起動します。
+# アプリケーションが [http://localhost:3000](http://localhost:3000) で起動します。
+```
 
 ### 3. チャット表示の開始
 
@@ -120,20 +121,19 @@ src/
 
 ## 📋 利用可能なスクリプト
 
-### `npm start`
-開発モードでアプリケーションを起動します。
+### `npm run dev`
+Vite開発サーバーでアプリケーションを起動します。
 [http://localhost:3000](http://localhost:3000) でアクセスできます。
 
 ### `npm run build`
 本番用のビルドを作成します。
 `build`フォルダに最適化されたファイルが生成されます。
 
+### `npm run preview`
+本番ビルドの内容をローカルサーバーでプレビューします。
+
 ### `npm test`
 テストランナーを起動します。
-
-### `npm run eject`
-⚠️ **注意**: この操作は元に戻せません！
-Create React Appの設定を完全に制御したい場合に使用します。
 
 ## 🔍 APIエンドポイント
 
@@ -202,7 +202,6 @@ GET http://127.0.0.1:8000/api/youtube/livechat?video_id={VIDEO_ID}&page_token={P
 ## 🙏 謝辞
 
 - [YouTube Live Chat API](https://github.com/kerobot/livechatapi) - バックエンドAPIの提供
-- [Create React App](https://github.com/facebook/create-react-app) - プロジェクトの基盤
 - [React](https://reactjs.org/) - UIライブラリ
 
 ## 📞 サポート
