@@ -6,12 +6,14 @@ interface ChatContainerProps {
     messages: ChatMessageType[];
     isConnected: boolean;
     error: string | null;
+    onMessageClick?: (message: string) => void;
 }
 
 const ChatContainer: React.FC<ChatContainerProps> = ({
     messages,
     isConnected,
     error,
+    onMessageClick,
 }) => {
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +35,11 @@ const ChatContainer: React.FC<ChatContainerProps> = ({
             )}
 
             {messages.map((message) => (
-                <ChatMessage key={message.id} message={message} />
+                <ChatMessage 
+                    key={message.id} 
+                    message={message} 
+                    onClick={onMessageClick}
+                />
             ))}
 
             <div ref={messagesEndRef} />
