@@ -1,5 +1,5 @@
 import type { FormEvent } from 'react';
-import React, { useState, forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle, useState } from 'react';
 
 interface ChatInputProps {
     onSend: (message: string) => Promise<void>;

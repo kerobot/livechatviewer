@@ -35,9 +35,9 @@ const ChatContainer: React.FC<ChatContainerProps> = ({
             )}
 
             {messages.map((message) => (
-                <ChatMessage 
-                    key={message.id} 
-                    message={message} 
+                <ChatMessage
+                    key={message.id}
+                    message={message}
                     onClick={onMessageClick}
                 />
             ))}

@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useLiveChat } from '../hooks/useLiveChat';
 import ChatContainer from './ChatContainer';
-import ChatInput from './ChatInput';
 import type { ChatInputRef } from './ChatInput';
+import ChatInput from './ChatInput';
 import ChatStatus from './ChatStatus';
 import './LiveChat.css';
 

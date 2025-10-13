@@ -24,8 +24,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onClick }) => {
     };
 
     return (
-        <div 
-            className="chat-message" 
+        <div
+            className="chat-message"
             onClick={handleClick}
             style={{ cursor: onClick ? 'pointer' : 'default' }}
         >
