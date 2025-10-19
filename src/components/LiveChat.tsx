@@ -30,6 +30,8 @@ const LiveChat: React.FC = () => {
     pollingInterval,
     messageCount,
     isSending,
+    isDummyMode,
+    setIsDummyMode,
     handleConnect,
     handleDisconnect,
     sendMessage,
@@ -113,6 +115,19 @@ const LiveChat: React.FC = () => {
               </button>
             )}
           </div>
+
+          {/* ダミーモード切り替えボタン */}
+          {isConnected && (
+            <div className="dummy-mode-container">
+              <button
+                onClick={() => setIsDummyMode(!isDummyMode)}
+                className={`dummy-mode-button ${isDummyMode ? 'active' : ''}`}
+                title="スクリーンショット用のダミー表示に切り替え"
+              >
+                {isDummyMode ? '👤 ダミー表示中' : '👤 通常表示中'}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* エラーメッセージ */}

@@ -13,6 +13,7 @@ export const useLiveChat = (accessToken: string | null = null) => {
     const [pollingInterval, setPollingInterval] = useState<number>(config.defaultPollingInterval);
     const [messageCount, setMessageCount] = useState<number>(0);
     const [isSending, setIsSending] = useState<boolean>(false);
+    const [isDummyMode, setIsDummyMode] = useState<boolean>(false);
 
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const nextPageTokenRef = useRef<string | undefined>(undefined);
@@ -196,6 +197,18 @@ export const useLiveChat = (accessToken: string | null = null) => {
         }
     }, [accessToken, videoId]);
 
+    // ダミーモード用の固定アバター画像（SVGのData URI）
+    const dummyAvatar = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNDQ0MiLz4KPGNpcmNsZSBjeD0iMjAiIGN5PSIxNiIgcj0iNiIgZmlsbD0iIzk5OSIvPgo8cGF0aCBkPSJNMTAgMzJjMC02IDYtMTAgMTAtMTBzMTAgNCAxMCAxMCIgZmlsbD0iIzk5OSIvPgo8L3N2Zz4K';
+
+    // 表示用メッセージ（ダミーモードの場合は名前とアバターを置き換え）
+    const displayMessages = isDummyMode
+        ? messages.map(msg => ({
+            ...msg,
+            authorName: '********',
+            authorPhotoUrl: dummyAvatar,
+        }))
+        : messages;
+
     // クリーンアップ
     useEffect(() => {
         return () => {
@@ -210,12 +223,14 @@ export const useLiveChat = (accessToken: string | null = null) => {
         setVideoUrl,
         videoId,
         liveChatId,
-        messages,
+        messages: displayMessages,
         isConnected,
         error,
         pollingInterval,
         messageCount,
         isSending,
+        isDummyMode,
+        setIsDummyMode,
         handleConnect,
         handleDisconnect,
         sendMessage,

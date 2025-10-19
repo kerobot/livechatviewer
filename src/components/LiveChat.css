@@ -513,6 +513,40 @@
   align-items: center;
 }
 
+/* ダミーモード切り替えボタン */
+.dummy-mode-container {
+  flex-shrink: 0;
+}
+
+.dummy-mode-button {
+  padding: 8px 16px;
+  border: 2px solid #9CA3AF;
+  border-radius: 6px;
+  background: white;
+  color: #4B5563;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.dummy-mode-button:hover {
+  background: #F3F4F6;
+  border-color: #6B7280;
+  transform: translateY(-1px);
+}
+
+.dummy-mode-button.active {
+  background: #DBEAFE;
+  border-color: #3B82F6;
+  color: #1E40AF;
+}
+
+.dummy-mode-button.active:hover {
+  background: #BFDBFE;
+}
+
 /* モバイル対応 */
 @media (max-width: 768px) {
   .chat-input-container {
@@ -557,6 +591,14 @@
   .connection-controls-inline .url-input,
   .connection-controls-inline .connect-btn,
   .connection-controls-inline .disconnect-btn {
+    width: 100%;
+  }
+
+  .dummy-mode-container {
+    width: 100%;
+  }
+
+  .dummy-mode-button {
     width: 100%;
   }
 }
