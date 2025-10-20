@@ -1,16 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { config } from '../config';
-import type { ChatMessage, LiveChatMessageItem } from '../types/youtube';
+import type { ChatMessage, LiveChatMessageItem, SendMessageRequest, SendMessageResponse } from '../types/youtube';
 import { extractVideoId, fetchLiveChat, validateVideoId } from '../utils/youtube';
 
-export const useLiveChat = () => {
+export const useLiveChat = (accessToken: string | null = null) => {
     const [videoUrl, setVideoUrl] = useState<string>('');
     const [videoId, setVideoId] = useState<string | null>(null);
+    const [liveChatId, setLiveChatId] = useState<string | null>(null);
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [isConnected, setIsConnected] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [pollingInterval, setPollingInterval] = useState<number>(config.defaultPollingInterval);
     const [messageCount, setMessageCount] = useState<number>(0);
+    const [isSending, setIsSending] = useState<boolean>(false);
+    const [isDummyMode, setIsDummyMode] = useState<boolean>(false);
 
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const nextPageTokenRef = useRef<string | undefined>(undefined);
@@ -20,6 +23,11 @@ export const useLiveChat = () => {
     const fetchMessages = useCallback(async (id: string, pageToken?: string) => {
         try {
             const response = await fetchLiveChat(id, pageToken);
+
+            // liveChatIdを保存（メッセージ送信に使用）
+            if (response.items.length > 0 && response.items[0].snippet.liveChatId) {
+                setLiveChatId(response.items[0].snippet.liveChatId);
+            }
 
             // レスポンスデータを変換
             const newChatMessages: ChatMessage[] = response.items.map((item: LiveChatMessageItem) => ({
@@ -130,6 +138,77 @@ export const useLiveChat = () => {
         setError(null);
     }, []);
 
+    // メッセージ送信機能
+    const sendMessage = useCallback(async (message: string): Promise<void> => {
+        if (!accessToken) {
+            throw new Error('認証が必要だよ！まずログインしてね🔑');
+        }
+
+        if (!videoId) {
+            throw new Error('動画IDが見つからないよ😢 チャットに接続してからメッセージを送信してね！');
+        }
+
+        if (!message.trim()) {
+            throw new Error('メッセージを入力してね！');
+        }
+
+        setIsSending(true);
+
+        try {
+            const requestBody: SendMessageRequest = {
+                video_id: videoId,
+                message_text: message.trim(),
+                access_token: accessToken,
+            };
+
+            const response = await fetch(`${config.apiBaseUrl}/api/youtube/livechat/message`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                const errorMessage = errorData.detail
+                    ? (Array.isArray(errorData.detail)
+                        ? errorData.detail.map((e: any) => e.msg).join(', ')
+                        : errorData.detail)
+                    : 'メッセージの送信に失敗したよ😭';
+                throw new Error(errorMessage);
+            }
+
+            const data: SendMessageResponse = await response.json();
+
+            // 送信成功！
+            console.log('メッセージ送信成功！✨', {
+                message_id: data.message_id,
+                message_text: data.message_text,
+                author_name: data.author_name,
+                published_at: data.published_at,
+            });
+
+        } catch (err) {
+            console.error('メッセージ送信エラー:', err);
+            throw err;
+        } finally {
+            setIsSending(false);
+        }
+    }, [accessToken, videoId]);
+
+    // ダミーモード用の固定アバター画像（SVGのData URI）
+    const dummyAvatar = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNDQ0MiLz4KPGNpcmNsZSBjeD0iMjAiIGN5PSIxNiIgcj0iNiIgZmlsbD0iIzk5OSIvPgo8cGF0aCBkPSJNMTAgMzJjMC02IDYtMTAgMTAtMTBzMTAgNCAxMCAxMCIgZmlsbD0iIzk5OSIvPgo8L3N2Zz4K';
+
+    // 表示用メッセージ（ダミーモードの場合は名前とアバターを置き換え）
+    const displayMessages = isDummyMode
+        ? messages.map(msg => ({
+            ...msg,
+            authorName: '********',
+            authorPhotoUrl: dummyAvatar,
+        }))
+        : messages;
+
     // クリーンアップ
     useEffect(() => {
         return () => {
@@ -143,12 +222,17 @@ export const useLiveChat = () => {
         videoUrl,
         setVideoUrl,
         videoId,
-        messages,
+        liveChatId,
+        messages: displayMessages,
         isConnected,
         error,
         pollingInterval,
         messageCount,
+        isSending,
+        isDummyMode,
+        setIsDummyMode,
         handleConnect,
         handleDisconnect,
+        sendMessage,
     };
 };

@@ -46,3 +46,29 @@ export interface ChatMessage {
   timestamp: string;
   authorChannelId: string;
 }
+
+// 認証関連の型定義
+export interface AuthResponse {
+  auth_url: string;
+  state: string;
+}
+
+export interface AuthCallbackParams {
+  code?: string;
+  state?: string;
+  access_token?: string;
+}
+
+export interface SendMessageRequest {
+  video_id: string;
+  message_text: string;
+  access_token: string;
+}
+
+export interface SendMessageResponse {
+  message_id: string;
+  message_text: string;
+  author_name: string;
+  published_at: string;
+  success?: boolean;
+}

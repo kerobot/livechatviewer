@@ -14,6 +14,9 @@ export const config = {
      */
     api: {
         liveChat: '/api/youtube/livechat',
+        authLogin: '/api/auth/login',
+        authCallback: '/api/auth/callback',
+        chatSend: '/api/youtube/livechat/message',
     },
 
     /**

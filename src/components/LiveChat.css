@@ -224,6 +224,12 @@
 .chat-message:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   border-color: #1976d2;
+  background: #f8f9fa;
+}
+
+.chat-message:active {
+  transform: scale(0.98);
+  background: #e3f2fd;
 }
 
 .author-avatar {
@@ -348,4 +354,251 @@
 
 .chat-container::-webkit-scrollbar-thumb:hover {
   background: #999;
+}
+
+/* チャット入力欄のスタイル */
+.chat-input-container {
+  border-top: 2px solid #e5e5e5;
+  background: white;
+  padding: 12px 16px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chat-input-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-wrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 2px solid #e5e5e5;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+.chat-input:disabled {
+  background-color: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.chat-send-button {
+  padding: 10px 20px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.chat-send-button:hover:not(:disabled) {
+  background: #1565c0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(25, 118, 210, 0.3);
+}
+
+.chat-send-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.chat-send-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.chat-input-error {
+  padding: 8px 12px;
+  background: #ffebee;
+  color: #c62828;
+  border-radius: 4px;
+  font-size: 13px;
+  border-left: 3px solid #c62828;
+  animation: slideIn 0.3s ease-out;
+}
+
+.chat-input-info {
+  font-size: 11px;
+  color: #999;
+  text-align: right;
+}
+
+/* 認証セクションのスタイル（旧版 - 削除予定） */
+.auth-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* 認証ボタンとコントロールを横並びに */
+.auth-and-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.auth-button-container {
+  flex-shrink: 0;
+}
+
+.auth-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.login-button {
+  background: #1976d2;
+  color: white;
+}
+
+.login-button:hover:not(:disabled) {
+  background: #1565c0;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(25, 118, 210, 0.3);
+}
+
+.login-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.logout-button {
+  background: #f44336;
+  color: white;
+}
+
+.logout-button:hover {
+  background: #d32f2f;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(244, 67, 54, 0.3);
+}
+
+.connection-controls-inline {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* ダミーモード切り替えボタン */
+.dummy-mode-container {
+  flex-shrink: 0;
+}
+
+.dummy-mode-button {
+  padding: 8px 16px;
+  border: 2px solid #9CA3AF;
+  border-radius: 6px;
+  background: white;
+  color: #4B5563;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.dummy-mode-button:hover {
+  background: #F3F4F6;
+  border-color: #6B7280;
+  transform: translateY(-1px);
+}
+
+.dummy-mode-button.active {
+  background: #DBEAFE;
+  border-color: #3B82F6;
+  color: #1E40AF;
+}
+
+.dummy-mode-button.active:hover {
+  background: #BFDBFE;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .chat-input-container {
+    padding: 10px 12px;
+  }
+
+  .input-wrapper {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .chat-input,
+  .chat-send-button {
+    width: 100%;
+  }
+
+  .auth-section {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  /* 横並びレイアウトもモバイルでは縦に */
+  .auth-and-controls {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .auth-button-container {
+    width: 100%;
+  }
+
+  .auth-button {
+    width: 100%;
+  }
+
+  .connection-controls-inline {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .connection-controls-inline .url-input,
+  .connection-controls-inline .connect-btn,
+  .connection-controls-inline .disconnect-btn {
+    width: 100%;
+  }
+
+  .dummy-mode-container {
+    width: 100%;
+  }
+
+  .dummy-mode-button {
+    width: 100%;
+  }
 }
